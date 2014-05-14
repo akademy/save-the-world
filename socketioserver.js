@@ -12,12 +12,16 @@ server = http.createServer();
 server.on('request', function(req, res){
 	
 	if( req.url == "/communicate.js" ) {
-		res.writeHead(200, {'content-type': 'text/javascript'});
-		res.end(commFile);
+		res.writeHead( 200, {'content-type': 'text/javascript'} );
+		fs.readFile( 'communicate.js', function( error, file ) {
+			res.end(file);
+		});
 	}
 	else {
 		res.writeHead(200, {'content-type': 'text/html'});
-		res.end(sockFile);
+		fs.readFile( 'socket.html', function( error, file ) {
+			res.end(file);
+		});
 	}
 });
 
