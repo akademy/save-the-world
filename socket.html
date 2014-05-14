@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
   <body>
+	<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/So_happy_smiling_cat.jpg/514px-So_happy_smiling_cat.jpg">
     <script src="/socket.io/socket.io.js"></script> 
     <script src="communicate.js"></script> 
-    <script> 
-		com.setup();
-		com.test("On spaceship");
+    <script>
+		var com = new communicate( io.connect('http://localhost:8080') );
+		com.sendMessage("On spaceship!");
     </script> 
   </body>
 </html>

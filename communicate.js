@@ -1,21 +1,29 @@
 (function(){
-
-	var com = {
+	
+	function communicate( control ) {
+	
+		var _control = control;
+		var _message_code = "miaow";
 		
-		setup : function() {
-		  var socket = io.connect('http://localhost:8080');
-		  socket.on('message', function(data){ console.log(data) })
-		},
+		_control.on( _message_code , function( data ){ console.log( unscramble( data ) ) });
 		
-		test : function( message ) {
-			console.log( message );
-		}
+		this.sendMessage = function( message ) {
+			_control.emit( _message_code, scramble( message ) );
+		};
+		
+		function scramble( data ) {
+			return data;
+		};
+		
+		function unscramble( data ) {
+			return data;
+		};
 	}
 
 	try {
-		window.com = com;
+		window.communicate = communicate;
 	} catch(e) {
-		module.exports = com;
+		module.exports = communicate;
 	}
 
 
