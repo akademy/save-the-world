@@ -12,11 +12,19 @@
 		};
 		
 		function scramble( data ) {
-			return data;
+			var scrambled = "";
+			for( var i=0;i<data.length;i++) {
+				scrambled += String.fromCharCode( data.charCodeAt(i) + 1 );
+			}
+			return scrambled;
 		};
 		
 		function unscramble( data ) {
-			return data;
+			var unscrambled = "";
+			for( var i=0;i<data.length;i++) {
+				unscrambled += String.fromCharCode( data.charCodeAt(i) - 1 );
+			}
+			return unscrambled;
 		};
 	}
 
