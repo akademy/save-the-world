@@ -4,9 +4,6 @@ var http = require('http'),
 
 var communicate = require('./communicate');
 
-var sockFile = fs.readFileSync('socket.html');
-var commFile = fs.readFileSync('communicate.js');
-
 server = http.createServer();
 
 server.on('request', function(req, res){
