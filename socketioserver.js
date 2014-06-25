@@ -28,6 +28,14 @@ server.listen(8080);
 var socket = io.listen(server);
 
 socket.on('connection', function(client){
-	var com = new communicate( client );
-	com.sendMessage( 'Welcome client ' + client.id );
+	var com = new communicate( client, function( message ){
+		console.log( message );
+		if( message == "on-spaceship" ) {
+			com.sendMessage( 'begin-shield-calibration' );
+		}
+		else if( message == "shield-calibration-started" ) {
+			com.sendMessage( 'return-shield-frequency' );
+		}
+		
+	});
 });

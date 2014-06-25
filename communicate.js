@@ -1,14 +1,11 @@
 (function(){
 	
-	function communicate( control ) {
-	
-		var _control = control;
-		var _message_code = "miaow";
+	function communicate( _control, _response ) {
 		
-		_control.on( _message_code , function( data ){ console.log( unscramble( data ) ) });
+		_control.on( "miaow" , function( message ){ _response( unscramble( message ) ) } );
 		
 		this.sendMessage = function( message ) {
-			_control.emit( _message_code, scramble( message ) );
+			_control.emit( "miaow", scramble( message ) );
 		};
 		
 		function scramble( data ) {
@@ -17,7 +14,7 @@
 				scrambled += String.fromCharCode( data.charCodeAt(i) + 1 );
 			}
 			return scrambled;
-		};
+		}
 		
 		function unscramble( data ) {
 			var unscrambled = "";
@@ -25,7 +22,7 @@
 				unscrambled += String.fromCharCode( data.charCodeAt(i) - 1 );
 			}
 			return unscrambled;
-		};
+		}
 	}
 
 	try {
@@ -33,6 +30,5 @@
 	} catch(e) {
 		module.exports = communicate;
 	}
-
 
 })();

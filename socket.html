@@ -3,10 +3,25 @@
   <body>
 	<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/So_happy_smiling_cat.jpg/514px-So_happy_smiling_cat.jpg">
     <script src="/socket.io/socket.io.js"></script> 
-    <script src="communicate.js"></script> 
+    <script src="/communicate.js"></script> 
     <script>
-		var com = new communicate( io.connect('http://localhost:8080') );
-		com.sendMessage("On spaceship!");
+		var shield_frequency = 0, shield_calibrate;
+		var com = new communicate( io.connect('http://localhost:8080'), function( message ) {
+			console.log(message);
+			if( message == "begin-shield-calibration" ) {
+				com.sendMessage("shield-calibration-started");
+				shield_calibrate = setInterval( function() {
+					shield_frequency += 57.007;
+					console.log( shield_frequency );
+				}, 1 );
+			}
+			else if( message == "return-shield-frequency" ) {
+				clearInterval( shield_calibrate );
+				com.sendMessage( shield_frequency + "" );
+			}
+		});
+		
+		com.sendMessage("on-spaceship");
     </script> 
   </body>
 </html>
