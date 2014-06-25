@@ -2,7 +2,7 @@ var http = require('http'),
     io = require('socket.io'),
     fs = require('fs');	
 
-var communicate = require('./communicate');
+var Communicate = require('./communicate');
 
 server = http.createServer();
 
@@ -23,24 +23,26 @@ server.on('request', function(req, res){
 
 server.listen(8080);
 
+var socketio = io.listen(server);
 
-var socket = io.listen(server);
-
-socket.on('connection', function(client) {
+socketio.on( 'connection', function( socket ) {
+    
 	var localTime = null;
-	var com = new communicate( client, function( message, data ) {
-		
-		com.log( message, data );
-		
-		if( message == "on-spaceship" ) {
+	var com = new Communicate();
+    
+    socket.on( "miaow", function( response ) {
+        var message = com.unscramble( response["message"] );
+        console.log(message);
+
+        if( message == "ON-SPACESHIP" ) {
             localTime = (+new Date());
-			com.sendMessage( 'get-ship-time' );
-		}
-		else if( message == "ship-time" ) {
-            var timeDifference = data - localTime;
-			
-			console.log( "Time from Spaceship to Earth", timeDifference );
-		}
-		
-	});
+            socket.emit( "miaow", { message: com.scramble( 'GET-SHIP-TIME') } );
+        }
+        else if( message == "SHIP-TIME" ) {
+            var shipTime = com.unscramble( response['data'] );
+            var timeDifference = shipTime - localTime;
+
+            console.log( "Time from Spaceship to Earth", timeDifference );
+        }
+    });
 });

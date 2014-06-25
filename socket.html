@@ -8,18 +8,19 @@
     <script src="/socket.io/socket.io.js"></script> 
     <script src="/communicate.js"></script> 
     <script>
-		var shield_frequency = 0, shield_calibrate;
-		var com = new communicate( io.connect('http://signet-coarse.codio.io:8080'),
-			
-			function( message, data ) {
-				console.log(message);
-				if( message == "get-ship-time" ) {
-					com.sendMessage( "ship-time", (+new Date())+"" );
-				}
-			} 
-		);
-		
-		com.sendMessage( "on-spaceship" );
+        var socket = io.connect( 'http://signet-coarse.codio.io:8080' );
+        var com = new Communicate();
+
+        socket.on( "miaow", function( response ) {
+            var message = com.unscramble( response["message"] );
+            console.log(message);
+
+            if( message == "GET-SHIP-TIME" ) {
+                socket.emit( "miaow", { message: com.scramble( "SHIP-TIME" ), data: com.scramble( (+new Date())+"" ) } );
+            }
+        });
+
+        socket.emit( "miaow", { message : com.scramble( "ON-SPACESHIP" ) } ); 
     </script> 
   </body>
 </html>
