@@ -2,24 +2,36 @@
 	
 	function communicate( _control, _response ) {
 		
-		_control.on( "miaow" , function( message ){ _response( unscramble( message ) ) } );
+		// When we recieve a message
+		_control.on( "miaow" , function( response ) {
+			_response( unscramble( response.message ), unscramble( response.data ) );
+		} );
 		
-		this.sendMessage = function( message ) {
-			_control.emit( "miaow", scramble( message ) );
+		// send our message
+		this.sendMessage = function( message, data ) {
+			_control.emit( "miaow", { message : scramble( message ), data : scramble( data || "" ) } );
+		};
+
+		this.log = function(message, data) {
+			if( data ) {
+				console.log('Message:',message,"Data:",data);
+			} else {
+				console.log('Message:',message);
+			}
 		};
 		
-		function scramble( data ) {
-			var scrambled = "";
-			for( var i=0;i<data.length;i++) {
-				scrambled += String.fromCharCode( data.charCodeAt(i) + 1 );
+		// Scramble a string (hide it)
+		function scramble( text ) {
+			for( var i=0,scrambled="";i<text.length;i++) {
+				scrambled += String.fromCharCode( text.charCodeAt(i) + 1 );
 			}
 			return scrambled;
 		}
 		
-		function unscramble( data ) {
-			var unscrambled = "";
-			for( var i=0;i<data.length;i++) {
-				unscrambled += String.fromCharCode( data.charCodeAt(i) - 1 );
+		// Unscramble a string
+		function unscramble( text ) {
+			for( var i=0, unscrambled="";i<text.length;i++) {
+				unscrambled += String.fromCharCode( text.charCodeAt(i) - 1 );
 			}
 			return unscrambled;
 		}

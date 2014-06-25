@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<meta charset="UTF-8">
+	</head>
   <body>
-	<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/So_happy_smiling_cat.jpg/514px-So_happy_smiling_cat.jpg">
+	<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/0/04/So_happy_smiling_cat.jpg/514px-So_happy_smiling_cat.jpg" width="514"/>
     <script src="/socket.io/socket.io.js"></script> 
     <script src="/communicate.js"></script> 
     <script>
 		var shield_frequency = 0, shield_calibrate;
-		var com = new communicate( io.connect('http://localhost:8080'), function( message ) {
-			console.log(message);
-			if( message == "begin-shield-calibration" ) {
-				com.sendMessage("shield-calibration-started");
-				shield_calibrate = setInterval( function() {
-					shield_frequency += 57.007;
-					console.log( shield_frequency );
-				}, 1 );
-			}
-			else if( message == "return-shield-frequency" ) {
-				clearInterval( shield_calibrate );
-				com.sendMessage( shield_frequency + "" );
-			}
-		});
+		var com = new communicate( io.connect('http://signet-coarse.codio.io:8080'),
+			
+			function( message, data ) {
+				console.log(message);
+				if( message == "get-ship-time" ) {
+					com.sendMessage( "ship-time", (+new Date())+"" );
+				}
+			} 
+		);
 		
-		com.sendMessage("on-spaceship");
+		com.sendMessage( "on-spaceship" );
     </script> 
   </body>
 </html>
