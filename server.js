@@ -16,7 +16,7 @@ server.on('request', function(request, response){
 			response.end(file);
 		});
 	}
-	else if( request.url == "/socket.html") {
+	else if( request.url == "/cats.html") {
 			
 		response.writeHead(200, {'content-type': 'text/html'} );
 		fs.readFile( 'socket.html', function( error, file ) {
@@ -27,9 +27,10 @@ server.on('request', function(request, response){
 		  
 		routerResponse = router.router( request, response );
 
-		response.writeHead( 200, {"Content-Type": "text/plain"} );
-		response.write( "Response:  " );
-		response.end( routerResponse );
+		response.writeHead( 200, {"Content-Type": "text/html"} );
+		response.write( '<html><head><meta charset="UTF-8"></head><body>')
+		response.write( routerResponse );
+		response.end( "</body></html>"  );
 	}
 	
 });

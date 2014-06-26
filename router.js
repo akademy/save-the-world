@@ -2,7 +2,7 @@ var url = require( "url" );
 //var util = require( 'util' );
 
 var handlers = {
-	"/" 			: "handler_wait",
+	"/" 			: "handler_cats",
 	"/lasers" 		: "handler_laser",
 	"/surrender" 	: "handler_surrender",
 };
@@ -19,7 +19,7 @@ function earth_defence_router( request, response ) {
 		return handler.handle( request, response );
 	}
 	
-	return "No viable response. Fire wildly into the skies!";
+	return '<p>No viable response. <span style="color:red"><blink>Fire wildly into the skies!!!</blink></span></p>';
 }
 
 exports.router = earth_defence_router;

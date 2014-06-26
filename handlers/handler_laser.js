@@ -4,8 +4,8 @@ var responses = {
 	"/"						: "Lasers? They're friendly right?",
 	"/low" 					: "Working on our tan.",
 	"/high" 				: "Raise Worldwide Shields!",
-	"/vogons"				: "The dolphins are leaving the planet.",
-	"/earth-shattering"		: "Kaboom.",
+	"/vogons"				: "The dolphins are leaving the planet...",
+	"/earth-shattering"		: '<span style="font-size:100pt">Kaboom!</span>',
 };
 
 function handler_laser( alien_attack, human_defence ) {
@@ -16,10 +16,10 @@ function handler_laser( alien_attack, human_defence ) {
 	var subsubpath = ( subpaths.length > 2 ) ? "/" + subpaths[2] : "/";
 	
 	if( subsubpath in responses ) {
-		return responses[subsubpath];
+		return "<p>" + responses[subsubpath] + "</p>";
 	}
 	
-	return "Perhaps if we had some kind of really big mirror?";
+	return "<p>Perhaps if we had some kind of really big mirror???</p>";
 }
 
 exports.handle = handler_laser;
