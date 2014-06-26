@@ -2,23 +2,36 @@ var http = require('http'),
     io = require('socket.io'),
     fs = require('fs');	
 
-var Communicate = require('./communicate');
+var Communicate = require('./communicate'),
+	router = require('./router');
 
 server = http.createServer();
 
-server.on('request', function(req, res){
-	if( req.url == "/communicate.js" ) {
-		res.writeHead( 200, {'content-type': 'text/javascript'} );
+server.on('request', function(request, response){
+	
+	if( request.url == "/communicate.js" ) {
+		
+		response.writeHead( 200, {'content-type': 'text/javascript'} );
 		fs.readFile( 'communicate.js', function( error, file ) {
-			res.end(file);
+			response.end(file);
+		});
+	}
+	else if( request.url == "/socket.html") {
+			
+		response.writeHead(200, {'content-type': 'text/html'} );
+		fs.readFile( 'socket.html', function( error, file ) {
+			response.end(file);
 		});
 	}
 	else {
-		res.writeHead(200, {'content-type': 'text/html'} );
-		fs.readFile( 'socket.html', function( error, file ) {
-			res.end(file);
-		});
+		  
+		routerResponse = router.router( request, response );
+
+		response.writeHead( 200, {"Content-Type": "text/plain"} );
+		response.write( "Response:  " );
+		response.end( routerResponse );
 	}
+	
 });
 
 server.listen(8080);
